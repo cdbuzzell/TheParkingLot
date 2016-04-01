@@ -21,7 +21,7 @@ Season: @(Html.DropDownListFor(m => m.Seasons, Model.Seasons, null, null))
             <td>@round.Date.ToString("ddd M/dd/yyyy")</td>
             <td>@round.Date.ToString("h:mm tt")</td>
             <td>@round.RoundName</td>
-            <td>@round.CourseName</td>
+            <td><a href="@round.CourseUrl" target="_blank">@round.CourseName</a></td>
             <td>@round.GolferName</td>
             <td>@round.Game</td>
         </tr>

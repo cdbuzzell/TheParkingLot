@@ -22,12 +22,9 @@ namespace TheParkingLot.Models
 
         public List<GolferPointTotal> GetLeaderboard(int season)
         {
-            //TODO: this can't be the right way to do this
+            //TODO: this can't be the right way to do this, are we binding data twice?
             var result = Leaderboard.FromSql("dbo.GetLeaderboard @Season = {0}", season);
             return result.ToList<GolferPointTotal>();
-
-            //Leaderboard.FromSql("dbo.GetLeaderboard @Season = {0}", year);
-            //return Leaderboard;
         }
 
         public List<Round> GetSchedule(int season)
