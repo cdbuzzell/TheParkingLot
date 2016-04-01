@@ -1,0 +1,30 @@
+﻿@inject IOptions<AppSettings> AppSettings
+@model TheParkingLot.ViewModels.Home.ScheduleViewModel
+@{
+    ViewData["Title"] = "Schedule";
+}
+<h2>@ViewData["Title"]</h2>
+Season: @(Html.DropDownListFor(m => m.Seasons, Model.Seasons, null, null))
+
+<table class="table">
+    <tr>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Event</th>
+        <th>Course</th>
+        <th>Beer Duty</th>
+        <th>Game</th>
+    </tr>
+    @foreach (Round round in Model.Schedule)
+    {
+        <tr>
+            <td>@round.Date.ToString("ddd M/dd/yyyy")</td>
+            <td>@round.Date.ToString("h:mm tt")</td>
+            <td>@round.RoundName</td>
+            <td>@round.CourseName</td>
+            <td>@round.GolferName</td>
+            <td>@round.Game</td>
+        </tr>
+    }
+</table>
+
