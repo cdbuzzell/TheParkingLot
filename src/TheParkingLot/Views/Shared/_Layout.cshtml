@@ -9,12 +9,14 @@
         <environment names="Development">
             <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
             <link rel="stylesheet" href="~/css/site.css" />
+            <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" />
         </environment>
         <environment names="Staging,Production">
             <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.5/css/bootstrap.min.css"
                   asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
                   asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
             <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+            <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" />
         </environment>
     </head>
     <body>
@@ -37,9 +39,9 @@
                         <li><a asp-controller="Home" asp-action="Statistics">Statistics</a></li>
                         <li><a href="@AppSettings.Value.PhotosUrl" target="_blank">Photos</a></li>
                     </ul>
-                    <div class="nav navbar-nav navbar-right">
-                        <a href="https://twitter.com/@AppSettings.Value.TwitterHandle" target="_blank">[bird icon]</a>
-                    </div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="https://twitter.com/@AppSettings.Value.TwitterHandle" target="_blank" class="fa fa-twitter fa-2x"></a>
+                    </ul>
                 </div>
             </div>
         </div>
