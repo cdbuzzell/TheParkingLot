@@ -18,6 +18,18 @@
             <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
             <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" />
         </environment>
+        <script>
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+            ga('create', '@AppSettings.Value.GoogleAnalyticsTrackingId', 'auto');
+            ga('send', 'pageview');
+
+        </script>
     </head>
     <body>
         <div class="navbar navbar-inverse navbar-fixed-top">
@@ -40,7 +52,7 @@
                         <li><a href="@AppSettings.Value.PhotosUrl" target="_blank">Photos</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="https://twitter.com/@AppSettings.Value.TwitterHandle" target="_blank" class="fa fa-twitter fa-2x"></a>
+                        <li><a href="https://twitter.com/@AppSettings.Value.TwitterUsername" target="_blank" class="fa fa-twitter fa-2x"></a>
                     </ul>
                 </div>
             </div>
