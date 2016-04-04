@@ -35,8 +35,11 @@
                         <li><a asp-controller="Home" asp-action="Index">Home</a></li>
                         <li><a asp-controller="Home" asp-action="Schedule">Schedule</a></li>
                         <li><a asp-controller="Home" asp-action="Statistics">Statistics</a></li>
+                        <li><a href="@AppSettings.Value.PhotosUrl" target="_blank">Photos</a></li>
                     </ul>
-                    @await Html.PartialAsync("_LoginPartial")
+                    <div class="nav navbar-nav navbar-right">
+                        <a href="https://twitter.com/@AppSettings.Value.TwitterHandle" target="_blank">[bird icon]</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -44,7 +47,7 @@
             @RenderBody()
             <hr />
             <footer>
-                <p>&copy; 2016 - @AppSettings.Value.SiteTitle [twitter]</p>
+                <p>&copy; 2016 - @AppSettings.Value.SiteTitle</p>
             </footer>
         </div>
 
