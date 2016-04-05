@@ -1,8 +1,8 @@
 ﻿CREATE VIEW dbo.GolferRounds
 AS
-SELECT        G.GolferId, G.Name, G.FullName, G.Avatar, G.Enabled, GR.GolferRoundId, GR.Score, GR.Points, GR.Comments, R.RoundId, R.Date, R.Name AS RoundName, R.Details, R.Game, R.BeerDutyGolferId, 
-                         BD.Name AS BeerDutyName, BD.FullName AS BeerDutyFullName, BD.Avatar AS BeerDutyAvatar, BD.Enabled AS BeerDutyEnabled, C.CourseId, C.Name AS CourseName, C.Url, C.Zip, C.Latitude, C.Longitude, 
-                         C.Par, C.Rating, C.Slope
+SELECT        G.GolferId, G.Name, G.FullName, G.Avatar, G.Enabled, G.Username, G.BringsBeer, GR.GolferRoundId, GR.Score, GR.Points, GR.Comments, R.RoundId, R.Date, R.Name AS RoundName, R.Details, R.Game, 
+                         R.BeerDutyGolferId, BD.Name AS BeerDutyName, BD.FullName AS BeerDutyFullName, BD.Avatar AS BeerDutyAvatar, BD.Enabled AS BeerDutyEnabled, C.CourseId, C.Name AS CourseName, C.Url, C.Zip, 
+                         C.Latitude, C.Longitude, C.Par, C.Rating, C.Slope
 FROM            dbo.Golfer AS G INNER JOIN
                          dbo.GolferRound AS GR ON G.GolferId = GR.GolferId INNER JOIN
                          dbo.Round AS R ON GR.RoundId = R.RoundId INNER JOIN
@@ -85,7 +85,7 @@ Begin DesignProperties =
             Begin Extent = 
                Top = 6
                Left = 38
-               Bottom = 136
+               Bottom = 210
                Right = 208
             End
             DisplayFlags = 280
@@ -156,6 +156,8 @@ Begin DesignProperties =
          Width = 1500
          Width = 1500
 ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'GolferRounds';
+
+
 
 
 GO
