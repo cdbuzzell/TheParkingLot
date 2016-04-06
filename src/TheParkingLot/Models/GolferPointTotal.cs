@@ -18,6 +18,12 @@ namespace TheParkingLot.Models
         
         public string Alias { get; set; }
 
+        [Display(Name = "Par3s")]
+        public int Par3Wins { get; set; }
+
+        [Display(Name = "Wins")]
+        public int GameWins { get; set; }
+
         [Display(Name = "Points")]
         public double TotalPoints { get; set; }
 

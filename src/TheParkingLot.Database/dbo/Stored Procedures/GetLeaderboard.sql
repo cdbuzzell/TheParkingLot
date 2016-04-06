@@ -13,6 +13,8 @@ BEGIN
 
 SELECT	ROW_NUMBER() OVER (ORDER BY SUM(ISNULL(Points, 0)) DESC) AS Rank, 
 		GolferId, Name AS GolferName, Alias, 
+		SUM(ISNULL(Par3sWon, 0)) AS Par3Wins,
+		COUNT(CASE WHEN WonGame=1 THEN 1 ELSE NULL END) AS GameWins,
 		SUM(ISNULL(Points, 0)) AS TotalPoints,
 		(SUM(ISNULL(Points, 0)) - 
 			(SELECT	TOP 1 SUM(ISNULL(GolferRounds.Points, 0))

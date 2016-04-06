@@ -19,6 +19,7 @@ namespace TheParkingLot.Models
 
         public DbSet<GolferPointTotal> Leaderboard { get; set; }
         public DbSet<Round> Schedule { get; set; }
+        public DbSet<GolferRound> Statistics { get; set; }
 
         public List<GolferPointTotal> GetLeaderboard(int season)
         {
@@ -31,6 +32,12 @@ namespace TheParkingLot.Models
         {
             var result = Schedule.FromSql("dbo.GetSchedule @Season = {0}", season);
             return result.ToList<Round>();
+        }
+
+        public List<GolferRound> GetStatistics(string golfer, int? season)
+        {
+            var result = Statistics.FromSql("dbo.GetGolferRounds @Golfer={0}, @Season = {1}", golfer, season);
+            return result.ToList<GolferRound>();
         }
     }
 }

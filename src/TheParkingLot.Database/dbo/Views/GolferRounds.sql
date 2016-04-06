@@ -1,6 +1,6 @@
 ﻿CREATE VIEW dbo.GolferRounds
 AS
-SELECT        G.GolferId, G.Name, G.FullName, G.Avatar, G.Enabled, G.Alias, G.BringsBeer, GR.GolferRoundId, GR.Score, GR.Points, GR.Par3sHit, GR.WonGame, GR.Comments, R.RoundId, R.Date, R.Name AS RoundName, 
+SELECT        G.GolferId, G.Name, G.FullName, G.Avatar, G.Enabled, G.Alias, G.BringsBeer, GR.GolferRoundId, GR.Score, GR.Points, GR.Par3sWon, GR.WonGame, GR.Comments, R.RoundId, R.Date, R.Name AS RoundName, 
                          R.Details, R.Game, R.BeerDutyGolferId, BD.Name AS BeerDutyName, BD.FullName AS BeerDutyFullName, BD.Avatar AS BeerDutyAvatar, BD.Enabled AS BeerDutyEnabled, C.CourseId, C.Name AS CourseName, 
                          C.Url, C.Zip, C.Latitude, C.Longitude, C.Par, C.Rating, C.Slope
 FROM            dbo.Golfer AS G INNER JOIN
