@@ -1,6 +1,6 @@
 ﻿CREATE VIEW dbo.GolferRounds
 AS
-SELECT        G.GolferId, G.Name, G.FullName, G.Avatar, G.Enabled, G.Username, G.BringsBeer, GR.GolferRoundId, GR.Score, GR.Points, GR.Comments, R.RoundId, R.Date, R.Name AS RoundName, R.Details, R.Game, 
+SELECT        G.GolferId, G.Name, G.FullName, G.Avatar, G.Enabled, G.Alias, G.BringsBeer, GR.GolferRoundId, GR.Score, GR.Points, GR.Comments, R.RoundId, R.Date, R.Name AS RoundName, R.Details, R.Game, 
                          R.BeerDutyGolferId, BD.Name AS BeerDutyName, BD.FullName AS BeerDutyFullName, BD.Avatar AS BeerDutyAvatar, BD.Enabled AS BeerDutyEnabled, C.CourseId, C.Name AS CourseName, C.Url, C.Zip, 
                          C.Latitude, C.Longitude, C.Par, C.Rating, C.Slope
 FROM            dbo.Golfer AS G INNER JOIN
@@ -81,16 +81,6 @@ Begin DesignProperties =
          Left = 0
       End
       Begin Tables = 
-         Begin Table = "G"
-            Begin Extent = 
-               Top = 6
-               Left = 38
-               Bottom = 210
-               Right = 208
-            End
-            DisplayFlags = 280
-            TopColumn = 0
-         End
          Begin Table = "GR"
             Begin Extent = 
                Top = 6
@@ -121,6 +111,16 @@ Begin DesignProperties =
             DisplayFlags = 280
             TopColumn = 0
          End
+         Begin Table = "G"
+            Begin Extent = 
+               Top = 6
+               Left = 38
+               Bottom = 210
+               Right = 208
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
          Begin Table = "BD"
             Begin Extent = 
                Top = 6
@@ -138,7 +138,7 @@ Begin DesignProperties =
    Begin DataPane = 
       Begin ParameterDefaults = ""
       End
-      Begin ColumnWidths = 30
+      Begin ColumnWidths = 31
          Width = 284
          Width = 1500
          Width = 1500
@@ -160,8 +160,11 @@ Begin DesignProperties =
 
 
 
+
+
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'         Width = 1500
+         Width = 1500
          Width = 1500
          Width = 1500
          Width = 1500
@@ -196,6 +199,8 @@ EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'         W
    End
 End
 ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'GolferRounds';
+
+
 
 
 GO

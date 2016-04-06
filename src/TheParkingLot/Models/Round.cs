@@ -25,7 +25,7 @@ namespace TheParkingLot.Models
 
         public Guid BeerDutyGolferId { get; set; }
 
-        public string Username { get; set; }
+        public string Alias { get; set; }
 
         [Display(Name = "Beer Duty")]
         public string GolferName { get; set; }

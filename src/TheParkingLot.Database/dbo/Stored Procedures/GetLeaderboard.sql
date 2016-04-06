@@ -12,7 +12,7 @@ BEGIN
 	SET NOCOUNT ON;
 
 SELECT	ROW_NUMBER() OVER (ORDER BY SUM(ISNULL(Points, 0)) DESC) AS Rank, 
-		GolferId, Name AS GolferName, Username, 
+		GolferId, Name AS GolferName, Alias, 
 		SUM(ISNULL(Points, 0)) AS TotalPoints,
 		(SUM(ISNULL(Points, 0)) - 
 			(SELECT	TOP 1 SUM(ISNULL(GolferRounds.Points, 0))
@@ -22,7 +22,7 @@ SELECT	ROW_NUMBER() OVER (ORDER BY SUM(ISNULL(Points, 0)) DESC) AS Rank,
 			ORDER BY SUM(ISNULL(GolferRounds.Points, 0)) DESC)) AS PointsBehind
 FROM	GolferRounds
 WHERE	YEAR([Date]) = @Season
-GROUP BY GolferId, Name, Username
+GROUP BY GolferId, Name, Alias
 ORDER BY SUM(ISNULL(Points, 0)) DESC, Name
 
 END

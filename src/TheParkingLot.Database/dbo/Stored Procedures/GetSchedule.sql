@@ -13,7 +13,7 @@ BEGIN
 
 SELECT	R.RoundId, R.[Date], R.Name AS RoundName, R. Details, R.Game, 
 		R.CourseId, C.Name AS CourseName, C.Url AS CourseUrl, C.Zip, C.Latitude, C.Longitude, C.Par, C.Rating, C.Slope, 
-		R.BeerDutyGolferId, G.Username, G.Name AS GolferName, G.Avatar, G.[Enabled]
+		R.BeerDutyGolferId, G.Alias, G.Name AS GolferName, G.Avatar, G.[Enabled]
 FROM	dbo.[Round] R 
 		LEFT OUTER JOIN dbo.Course C ON R.CourseId = C.CourseId
 		LEFT OUTER JOIN dbo.Golfer G ON R.BeerDutyGolferId = G.GolferId

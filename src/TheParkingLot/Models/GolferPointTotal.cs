@@ -16,7 +16,7 @@ namespace TheParkingLot.Models
         [Display(Name = "Golfer")]
         public string GolferName { get; set; }
         
-        public string Username { get; set; }
+        public string Alias { get; set; }
 
         [Display(Name = "Points")]
         public double TotalPoints { get; set; }

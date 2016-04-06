@@ -6,6 +6,9 @@
     [Avatar]     IMAGE            NULL,
     [Enabled]    BIT              CONSTRAINT [DF_Golfer_Enabled] DEFAULT ((1)) NOT NULL,
     [BringsBeer] BIT              CONSTRAINT [DF_Golfer_BringsBeer] DEFAULT ((0)) NOT NULL,
+    [Alias]      NVARCHAR (50)    NOT NULL,
     CONSTRAINT [PK_Golfer] PRIMARY KEY CLUSTERED ([GolferId] ASC)
 );
+
+
 
