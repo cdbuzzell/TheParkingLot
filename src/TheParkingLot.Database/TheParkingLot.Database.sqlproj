@@ -67,8 +67,6 @@
   <ItemGroup>
     <Build Include="dbo\Tables\Round.sql" />
     <Build Include="dbo\Tables\GolferRound.sql" />
-    <Build Include="dbo\Tables\WinType.sql" />
-    <Build Include="dbo\Tables\RoundWinner.sql" />
     <Build Include="dbo\Tables\Course.sql" />
     <Build Include="dbo\Tables\Golfer.sql" />
     <Build Include="dbo\Views\GolferRounds.sql" />
