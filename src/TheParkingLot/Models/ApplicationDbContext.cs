@@ -34,9 +34,10 @@ namespace TheParkingLot.Models
             return result.ToList<Round>();
         }
 
-        public List<GolferRound> GetStatistics(string golfer, int? season)
+        public List<GolferRound> GetStatistics(string golfer, int season)
         {
             var result = Statistics.FromSql("dbo.GetGolferRounds @Golfer={0}, @Season = {1}", golfer, season);
+            //TODO: this returns 2 results sets
             return result.ToList<GolferRound>();
         }
     }
