@@ -75,5 +75,6 @@
     <Build Include="dbo\Stored Procedures\GetBeerDutyRotation.sql" />
     <Build Include="dbo\Stored Procedures\GetGolferRounds.sql" />
     <Build Include="dbo\Views\Seasons.sql" />
+    <Build Include="dbo\Stored Procedures\GetGolferTotals.sql" />
   </ItemGroup>
 </Project>

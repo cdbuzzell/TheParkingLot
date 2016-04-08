@@ -9,7 +9,8 @@ namespace TheParkingLot.ViewModels.Home
 {
     public class StatisticsViewModel
     {
-        public List<GolferRound> YearStatistics { get; set; }
-        public List<GolferRound> AllStatistics { get; set; }
+        public List<GolferSeasonTotal> Leaderboard { get; set; }
+        public List<GolferRound> SeasonStatistics { get; set; }
+        public List<GolferSeasonTotal> AllStatistics { get; set; }
     }
 }

@@ -23,8 +23,8 @@ namespace TheParkingLot.Models
 
         public int Par { get; set; }
 
-        public double Rating { get; set; }
+        public double? Rating { get; set; }
 
-        public int Slope { get; set; }
+        public int? Slope { get; set; }
     }
 }

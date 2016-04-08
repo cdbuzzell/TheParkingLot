@@ -7,6 +7,8 @@ using TheParkingLot.Models;
 using Microsoft.Extensions.OptionsModel;
 using TheParkingLot.ViewModels.Home;
 using Microsoft.AspNet.Mvc.Rendering;
+using Microsoft.Data.Entity;
+using TheParkingLot.DataAccess;
 
 namespace TheParkingLot.Controllers
 {
@@ -23,10 +25,13 @@ namespace TheParkingLot.Controllers
 
         public IActionResult Index()
         {
+            string connectionString = _context.Database.GetDbConnection().ConnectionString;
+            HomeDataAccess da = new HomeDataAccess(connectionString);
+
             // get year from appSettings
             int season = _appSettings.Value.CurrentSeason;
-
-            List<GolferPointTotal> leaderboard = _context.GetLeaderboard(season);
+            
+            List<GolferSeasonTotal> leaderboard = da.GetLeaderboard(season);
 
             // filter schedule to upcoming dates only
             List<Round> schedule = _context.GetSchedule(season).Where(round => round.Date >= DateTime.Now).ToList();
@@ -56,7 +61,7 @@ namespace TheParkingLot.Controllers
             ScheduleViewModel model = new ScheduleViewModel
             {
                 Seasons = seasons,
-                Schedule = _context.GetSchedule(currentSeason)
+                Schedule = _context.GetSchedule(currentSeason)  //TODO: use dataaccess layer instead
                 //Schedule = season.HasValue ? _context.GetSchedule(currentSeason) : _context.GetSchedule(season.Value)
             };
 
@@ -65,9 +70,19 @@ namespace TheParkingLot.Controllers
 
         public IActionResult Statistics()
         {
-            ViewData["Message"] = "Statistics by golfer. Select Golfer and Season, show list of weekly stats. New: charts.";
+            string connectionString = _context.Database.GetDbConnection().ConnectionString;
+            HomeDataAccess da = new HomeDataAccess(connectionString);
 
-            return View();
+            //TODO: get season and golfer from view
+            string golfer = "golfer";
+            int season = 2015;// _appSettings.Value.CurrentSeason;
+
+            List<GolferSeasonTotal> leaderboard = da.GetLeaderboard(season);
+            List<GolferRound> seasonStats = da.GetGolferRounds(golfer, season);
+            List<GolferSeasonTotal> allStats = da.GetGolferTotals(golfer);
+
+            StatisticsViewModel model = new StatisticsViewModel { Leaderboard = leaderboard, SeasonStatistics = seasonStats, AllStatistics = allStats };
+            return View(model);
         }
 
         public IActionResult Error()

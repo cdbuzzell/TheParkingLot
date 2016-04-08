@@ -9,7 +9,7 @@ namespace TheParkingLot.ViewModels.Home
 {
     public class IndexViewModel
     {
-        public List<GolferPointTotal> Leaderboard { get; set; }
+        public List<GolferSeasonTotal> Leaderboard { get; set; }
         public List<Round> Schedule { get; set; }
         //public Golfer BeerDuty { get; set; }
     }

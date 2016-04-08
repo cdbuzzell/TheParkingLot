@@ -1,22 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace TheParkingLot.Models
 {
-    public class GolferPointTotal
+    public class GolferSeasonTotal
     {
-        [Key]
-        public Guid GolferId { get; set; }
+        public Golfer Golfer { get; set; }
 
         public Int64 Rank { get; set; }
-
-        [Display(Name = "Golfer")]
-        public string GolferName { get; set; }
-        
-        public string Alias { get; set; }
 
         [Display(Name = "Par3s")]
         public int Par3Wins { get; set; }
@@ -29,5 +20,9 @@ namespace TheParkingLot.Models
 
         [Display(Name = "Behind")]
         public double PointsBehind { get; set; }
+
+        public int Season { get; set; }
+
+        public double? AverageToPar { get; set; }
     }
 }

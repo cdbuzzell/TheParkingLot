@@ -1,7 +1,65 @@
-﻿@{
+﻿@inject IOptions<AppSettings> AppSettings
+@model TheParkingLot.ViewModels.Home.StatisticsViewModel
+@{
     ViewData["Title"] = "Statistics";
 }
-<h2>@ViewData["Title"].</h2>
-<h3>@ViewData["Message"]</h3>
-
-
+<h2>@ViewData["Title"]</h2>
+<div class="row">
+    <div class="col-md-4">
+        <div>
+            TODO: Handicap
+        </div>
+        <div id="leaderboard">
+            <h3>[Selected Season] Leaderboard</h3>
+            <table class="table">
+                <tr>
+                    <th>Rank</th>
+                    <th>Golfer</th>
+                    <th class="text-right">Par-3s</th>
+                    <th class="text-right">Wins</th>
+                    <th class="text-right">Points</th>
+                    <th class="text-right">Behind</th>
+                </tr>
+                @foreach (GolferSeasonTotal golfer in Model.Leaderboard)
+                {
+                    <tr>
+                        <td>@golfer.Rank</td>
+                        <td>@golfer.Golfer.GolferName</td>
+                        <td class="text-right">@golfer.Par3Wins</td>
+                        <td class="text-right">@golfer.GameWins</td>
+                        <td class="text-right">@golfer.TotalPoints</td>
+                        <td class="text-right">@golfer.PointsBehind</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <h3>[Season] Rounds for [Golfer]</h3>
+        <table class="table">
+            <tr>
+                <th>Date</th>
+                <th>Round</th>
+                <th>Course</th>
+                <th>Game</th>
+                <th>Score</th>
+                <th class="text-right">Points</th>
+                <th class="text-right">Par3s</th>
+                <th class="text-center">Game</th>
+            </tr>
+            @foreach (GolferRound round in Model.SeasonStatistics)
+            {
+                <tr>
+                    <td>@round.Round.Date.ToString("M/dd/yyyy")</td>
+                    <td>@round.Round.RoundName</td>
+                    <td><a href="@round.Course.Url" target="_blank">@round.Course.Name</a></td>
+                    <td>@round.Round.Game</td>
+                    <td>@round.Score</td>
+                    <td class="text-right">@round.Points</td>
+                    <td class="text-right">@round.Par3sWon</td>
+                    <td class="text-center">@if(round.WonGame) {<i class="fa fa-check-circle"></i>}</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

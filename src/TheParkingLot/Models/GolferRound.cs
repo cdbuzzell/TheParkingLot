@@ -1,16 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace TheParkingLot.Models
 {
     public class GolferRound
     {
-        [Key]
         public Guid GolferRoundId { get; set; }
 
-        //TODO: not done here
+        public Round Round { get; set; }
+
+        public Course Course { get; set; }
+
+        public Golfer Golfer { get; set; }
+
+        public double? Points { get; set; }
+
+        public int? Score { get; set; }
+
+        public int? Par3sWon { get; set; }
+
+        public bool WonGame { get; set; }
+
+        public string Comments { get; set; }
     }
 }

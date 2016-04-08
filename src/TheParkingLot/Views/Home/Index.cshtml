@@ -39,11 +39,11 @@
                     <th class="text-right">Points</th>
                     <th class="text-right">Behind</th>
                 </tr>
-                @foreach(GolferPointTotal golfer in Model.Leaderboard)
+                @foreach(GolferSeasonTotal golfer in Model.Leaderboard)
                 {
                     <tr>
                         <td>@golfer.Rank</td>
-                        <td>@golfer.GolferName</td>
+                        <td>@golfer.Golfer.GolferName</td>
                         <td class="text-right">@golfer.Par3Wins</td>
                         <td class="text-right">@golfer.GameWins</td>
                         <td class="text-right">@golfer.TotalPoints</td>
