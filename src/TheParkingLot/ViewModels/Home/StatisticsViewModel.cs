@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -12,5 +13,7 @@ namespace TheParkingLot.ViewModels.Home
         public List<GolferSeasonTotal> Leaderboard { get; set; }
         public List<GolferRound> SeasonStatistics { get; set; }
         public List<GolferSeasonTotal> AllStatistics { get; set; }
+        public List<SelectListItem> Seasons { get; set; }
+        public List<SelectListItem> Golfers { get; set; }
     }
 }

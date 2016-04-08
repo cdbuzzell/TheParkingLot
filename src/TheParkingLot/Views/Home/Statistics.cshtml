@@ -7,7 +7,9 @@
 <div class="row">
     <div class="col-md-4">
         <div>
-            TODO: Handicap
+            Season: @(Html.DropDownListFor(m => m.Seasons, Model.Seasons, null, null))
+            Golfer: @(Html.DropDownListFor(m => m.Golfers, Model.Golfers, null, null))
+            TODO: Display Handicap
         </div>
         <div id="leaderboard">
             <h3>[Selected Season] Leaderboard</h3>
@@ -43,9 +45,9 @@
                 <th>Course</th>
                 <th>Game</th>
                 <th>Score</th>
-                <th class="text-right">Points</th>
+                <th class="text-right">Pts</th>
                 <th class="text-right">Par3s</th>
-                <th class="text-center">Game</th>
+                <th class="text-center">Win</th>
             </tr>
             @foreach (GolferRound round in Model.SeasonStatistics)
             {

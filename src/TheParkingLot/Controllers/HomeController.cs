@@ -30,7 +30,7 @@ namespace TheParkingLot.Controllers
 
             // get year from appSettings
             int season = _appSettings.Value.CurrentSeason;
-            
+
             List<GolferSeasonTotal> leaderboard = da.GetLeaderboard(season);
 
             // filter schedule to upcoming dates only
@@ -47,21 +47,10 @@ namespace TheParkingLot.Controllers
 
         public IActionResult Schedule(string season)
         {
-            // get seasons
-            int currentSeason = _appSettings.Value.CurrentSeason;
-            int firstSeason = _appSettings.Value.FirstSeason;
-
-            List<SelectListItem> seasons = new List<SelectListItem>();
-            for(int s = currentSeason; s >= firstSeason; s--)
-            {
-                // add every season between the last and first
-                seasons.Add(new SelectListItem { Value = s.ToString(), Text = s.ToString() });
-            }
-
             ScheduleViewModel model = new ScheduleViewModel
             {
-                Seasons = seasons,
-                Schedule = _context.GetSchedule(currentSeason)  //TODO: use dataaccess layer instead
+                Seasons = GetSeasons(),
+                Schedule = _context.GetSchedule(_appSettings.Value.CurrentSeason)  //TODO: use dataaccess layer instead
                 //Schedule = season.HasValue ? _context.GetSchedule(currentSeason) : _context.GetSchedule(season.Value)
             };
 
@@ -75,19 +64,50 @@ namespace TheParkingLot.Controllers
 
             //TODO: get season and golfer from view
             string golfer = "golfer";
-            int season = 2015;// _appSettings.Value.CurrentSeason;
+            int season = 2014;// _appSettings.Value.CurrentSeason;
 
             List<GolferSeasonTotal> leaderboard = da.GetLeaderboard(season);
             List<GolferRound> seasonStats = da.GetGolferRounds(golfer, season);
             List<GolferSeasonTotal> allStats = da.GetGolferTotals(golfer);
 
-            StatisticsViewModel model = new StatisticsViewModel { Leaderboard = leaderboard, SeasonStatistics = seasonStats, AllStatistics = allStats };
+            StatisticsViewModel model = new StatisticsViewModel
+            {
+                Leaderboard = leaderboard,
+                SeasonStatistics = seasonStats,
+                AllStatistics = allStats,
+                Seasons = GetSeasons(),
+                Golfers = GetGolfers()
+            };
+
             return View(model);
         }
 
         public IActionResult Error()
         {
             return View();
+        }
+
+        private List<SelectListItem> GetSeasons()
+        {
+            int currentSeason = _appSettings.Value.CurrentSeason;
+            int firstSeason = _appSettings.Value.FirstSeason;
+
+            List<SelectListItem> seasons = new List<SelectListItem>();
+
+            for (int s = currentSeason; s >= firstSeason; s--)
+            {
+                // add every season between the last and first
+                seasons.Add(new SelectListItem { Value = s.ToString(), Text = s.ToString() });
+            }
+
+            return seasons;
+        }
+
+        private List<SelectListItem> GetGolfers()
+        {
+            List<SelectListItem> golfers = new List<SelectListItem>();
+
+            return golfers;
         }
     }
 }
