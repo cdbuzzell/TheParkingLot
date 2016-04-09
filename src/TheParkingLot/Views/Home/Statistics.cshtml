@@ -8,8 +8,8 @@
     <div class="col-md-4">
         <div>
             Season: @(Html.DropDownListFor(m => m.Seasons, Model.Seasons, null, null))
-            Golfer: @(Html.DropDownListFor(m => m.Golfers, Model.Golfers, null, null))
-            TODO: Display Handicap
+            Golfer: @(Html.DropDownListFor(m => m.Golfers, new SelectList(Model.Golfers, "Alias", "Name"), null, null))
+            <br />TODO: Display Handicap
         </div>
         <div id="leaderboard">
             <h3>[Selected Season] Leaderboard</h3>
@@ -26,7 +26,7 @@
                 {
                     <tr>
                         <td>@golfer.Rank</td>
-                        <td>@golfer.Golfer.GolferName</td>
+                        <td>@golfer.Golfer.Name</td>
                         <td class="text-right">@golfer.Par3Wins</td>
                         <td class="text-right">@golfer.GameWins</td>
                         <td class="text-right">@golfer.TotalPoints</td>
@@ -64,4 +64,143 @@
             }
         </table>
     </div>
+    <div id="chart1-container">Loading chart...</div>
 </div>
+
+@section Scripts {
+    <script type="text/javascript" src="~/lib/fusioncharts-suite-xt/fusioncharts.js"></script>
+
+    <script language="javascript" type="text/javascript">
+        $(function () {
+
+            var chart1 = {
+                type: 'mscombidy2d',
+                renderAt: 'chart1-container',
+                width: '100%',
+                height: '300',
+                dataFormat: 'json',
+                dataSource: {
+                    "chart": {
+                        "caption": "Inventory by Product Categories",
+                        "bgcolor": "FFFFFF",
+                        "plotgradientcolor": "",
+                        "showalternatehgridcolor": "0",
+                        "showplotborder": "0",
+                        "divlinecolor": "CCCCCC",
+                        "showvalues": "0",
+                        "showcanvasborder": "0",
+                        "pyaxisname": "Cost of Inventory",
+                        "syaxisname": "Units in Inventory",
+                        "numberprefix": "$",
+                        "labeldisplay": "STAGGER",
+                        "slantlabels": "1",
+                        "canvasborderalpha": "0",
+                        "legendshadow": "0",
+                        "legendborderalpha": "0",
+                        "showborder": "0",
+                        "animation": "0"
+                    },
+                    "categories": [
+                        {
+                            "category": [
+                                {
+                                    "label": "Seafood"
+                                },
+                                {
+                                    "label": "Beverages"
+                                },
+                                {
+                                    "label": "Condiments"
+                                },
+                                {
+                                    "label": "Dairy Products"
+                                },
+                                {
+                                    "label": "Confections"
+                                },
+                                {
+                                    "label": "Meat/Poultry"
+                                },
+                                {
+                                    "label": "Grains/Cereals"
+                                },
+                                {
+                                    "label": "Produce"
+                                }
+                            ]
+                        }
+                    ],
+                    "dataset": [
+                        {
+                            "seriesname": "Cost of Inventory",
+                            "color": "008ee4",
+                            "data": [
+                                {
+                                    "value": "13510"
+                                },
+                                {
+                                    "value": "12480"
+                                },
+                                {
+                                    "value": "12024"
+                                },
+                                {
+                                    "value": "11271"
+                                },
+                                {
+                                    "value": "10392"
+                                },
+                                {
+                                    "value": "5729"
+                                },
+                                {
+                                    "value": "5594"
+                                },
+                                {
+                                    "value": "3549"
+                                }
+                            ]
+                        },
+                        {
+                            "seriesname": "Quantity",
+                            "parentyaxis": "S",
+                            "renderas": "Line",
+                            "color": "f8bd19",
+                            "data": [
+                                {
+                                    "value": "701"
+                                },
+                                {
+                                    "value": "559"
+                                },
+                                {
+                                    "value": "507"
+                                },
+                                {
+                                    "value": "393"
+                                },
+                                {
+                                    "value": "386"
+                                },
+                                {
+                                    "value": "165"
+                                },
+                                {
+                                    "value": "258"
+                                },
+                                {
+                                    "value": "100"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            };
+
+            FusionCharts.ready(function (FusionCharts) {
+                var fusionChart = new FusionCharts(chart1);
+                fusionChart.render('chart1-container');
+            });
+        })
+    </script>
+}

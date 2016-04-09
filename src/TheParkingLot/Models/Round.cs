@@ -13,16 +13,19 @@ namespace TheParkingLot.Models
 
         public DateTime Date { get; set; }
 
+        //TODO: change to Name instead of RoundName
         public string RoundName { get; set; }
 
         public string Details { get; set; }
 
         public string Game { get; set; }
 
+        //TODO: use Course object instead
         public string CourseName { get; set; }
 
         public string CourseUrl { get; set; }
 
+        //TODO: use Golfer object
         public Guid BeerDutyGolferId { get; set; }
 
         public string Alias { get; set; }

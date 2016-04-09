@@ -38,7 +38,7 @@ namespace TheParkingLot.DataAccess
                                 {
                                     GolferId = reader["GolferId"] == DBNull.Value ? Guid.Empty : (Guid)reader["GolferId"],
                                     Alias = reader["Alias"].ToString(),
-                                    GolferName = reader["GolferName"].ToString()
+                                    Name = reader["GolferName"].ToString()
                                 },
                                 Rank = (Int64) reader["Rank"],
                                 Par3Wins = (int) reader["Par3Wins"],
@@ -98,7 +98,7 @@ namespace TheParkingLot.DataAccess
                                 {
                                     GolferId = reader["GolferId"] == DBNull.Value ? Guid.Empty : (Guid)reader["GolferId"],
                                     Alias = reader["Alias"].ToString(),
-                                    GolferName = reader["GolferName"].ToString()
+                                    Name = reader["GolferName"].ToString()
                                 },
                                 Points = reader["Points"] == DBNull.Value ? (double?)null : Convert.ToDouble(reader["Points"]),
                                 Score = reader["Score"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["Score"]),
@@ -137,7 +137,7 @@ namespace TheParkingLot.DataAccess
                                 Golfer = new Golfer
                                 {
                                     GolferId = reader["GolferId"] == DBNull.Value ? Guid.Empty : (Guid)reader["GolferId"],
-                                    GolferName = reader["GolferName"].ToString(),
+                                    Name = reader["GolferName"].ToString(),
                                     Alias = reader["Alias"].ToString()
                                 },
                                 Par3Wins = reader["Par3Wins"] == DBNull.Value ? 0 : (int)reader["Par3Wins"],
@@ -154,6 +154,40 @@ namespace TheParkingLot.DataAccess
             }
 
             return seasonTotals;
+        }
+
+        public List<Golfer> GetGolfers()
+        {
+            List<Golfer> golfers = new List<Golfer>();
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("GetGolfers", connection))
+                {
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            golfers.Add(new Golfer
+                            {
+                                GolferId = reader["GolferId"] == DBNull.Value ? Guid.Empty : (Guid)reader["GolferId"],
+                                Name = reader["Name"].ToString(),
+                                Alias = reader["Alias"].ToString(),
+                                Avatar = reader["Avatar"] == DBNull.Value ? null : (byte[]) reader["Avatar"],
+                                Enabled = Convert.ToBoolean(reader["Enabled"]),
+                                BringsBeer = Convert.ToBoolean(reader["BringsBeer"])
+                            });
+                        }
+                    }
+
+                    connection.Close();
+                }
+            }
+
+            return golfers;
         }
     }
 }

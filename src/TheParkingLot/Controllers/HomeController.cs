@@ -66,17 +66,13 @@ namespace TheParkingLot.Controllers
             string golfer = "golfer";
             int season = 2014;// _appSettings.Value.CurrentSeason;
 
-            List<GolferSeasonTotal> leaderboard = da.GetLeaderboard(season);
-            List<GolferRound> seasonStats = da.GetGolferRounds(golfer, season);
-            List<GolferSeasonTotal> allStats = da.GetGolferTotals(golfer);
-
             StatisticsViewModel model = new StatisticsViewModel
             {
-                Leaderboard = leaderboard,
-                SeasonStatistics = seasonStats,
-                AllStatistics = allStats,
+                Leaderboard = da.GetLeaderboard(season),
+                SeasonStatistics = da.GetGolferRounds(golfer, season),
+                AllStatistics = da.GetGolferTotals(golfer),
                 Seasons = GetSeasons(),
-                Golfers = GetGolfers()
+                Golfers = da.GetGolfers()
             };
 
             return View(model);
@@ -101,13 +97,6 @@ namespace TheParkingLot.Controllers
             }
 
             return seasons;
-        }
-
-        private List<SelectListItem> GetGolfers()
-        {
-            List<SelectListItem> golfers = new List<SelectListItem>();
-
-            return golfers;
         }
     }
 }

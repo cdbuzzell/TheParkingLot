@@ -14,6 +14,6 @@ namespace TheParkingLot.ViewModels.Home
         public List<GolferRound> SeasonStatistics { get; set; }
         public List<GolferSeasonTotal> AllStatistics { get; set; }
         public List<SelectListItem> Seasons { get; set; }
-        public List<SelectListItem> Golfers { get; set; }
+        public List<Golfer> Golfers { get; set; }
     }
 }

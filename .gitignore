@@ -234,3 +234,8 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+/src/TheParkingLot/Migrations
+/src/TheParkingLot/Properties/PublishProfiles/
+/db
+/src/TheParkingLot/appsettings.json
+/src/TheParkingLot/appsettings.release.json

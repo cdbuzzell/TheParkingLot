@@ -12,14 +12,16 @@ namespace TheParkingLot.Models
         public Guid GolferId { get; set; }
 
         public string Alias { get; set; }
-
+        
         [Display(Name = "Golfer")]
-        public string GolferName { get; set; }
+        public string Name { get; set; }
 
         public byte[] Avatar { get; set; }
 
-        //public bool Enabled { get; set; }
+        public string FullName { get; set; }
 
-        //public bool BringsBeer { get; set; }
+        public bool Enabled { get; set; }
+
+        public bool BringsBeer { get; set; }
     }
 }
