@@ -234,6 +234,8 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+
+# The Parking Lot
 /src/TheParkingLot/Migrations
 /src/TheParkingLot/Properties/PublishProfiles/
 /db

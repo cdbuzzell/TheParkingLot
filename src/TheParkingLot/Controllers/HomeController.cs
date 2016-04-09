@@ -34,7 +34,7 @@ namespace TheParkingLot.Controllers
             List<GolferSeasonTotal> leaderboard = da.GetLeaderboard(season);
 
             // filter schedule to upcoming dates only
-            List<Round> schedule = _context.GetSchedule(season).Where(round => round.Date >= DateTime.Now).ToList();
+            List<Round> schedule = da.GetSchedule(season).Where(round => round.Date >= DateTime.Now).ToList();
 
             IndexViewModel model = new IndexViewModel
             {
@@ -47,10 +47,13 @@ namespace TheParkingLot.Controllers
 
         public IActionResult Schedule(string season)
         {
+            string connectionString = _context.Database.GetDbConnection().ConnectionString;
+            HomeDataAccess da = new HomeDataAccess(connectionString);
+
             ScheduleViewModel model = new ScheduleViewModel
             {
                 Seasons = GetSeasons(),
-                Schedule = _context.GetSchedule(_appSettings.Value.CurrentSeason)  //TODO: use dataaccess layer instead
+                Schedule = da.GetSchedule(_appSettings.Value.CurrentSeason)
                 //Schedule = season.HasValue ? _context.GetSchedule(currentSeason) : _context.GetSchedule(season.Value)
             };
 

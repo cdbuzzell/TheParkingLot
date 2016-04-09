@@ -16,13 +16,5 @@ namespace TheParkingLot.Models
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
-        
-        public DbSet<Round> Schedule { get; set; }
-
-        public List<Round> GetSchedule(int season)
-        {
-            var result = Schedule.FromSql("dbo.GetSchedule @Season = {0}", season);
-            return result.ToList<Round>();
-        }
     }
 }

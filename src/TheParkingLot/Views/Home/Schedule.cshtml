@@ -20,9 +20,9 @@ Season: @(Html.DropDownListFor(m => m.Seasons, Model.Seasons, null, null))
         <tr>
             <td>@round.Date.ToString("ddd M/dd/yyyy")</td>
             <td>@round.Date.ToString("h:mm tt")</td>
-            <td>@round.RoundName</td>
-            <td><a href="@round.CourseUrl" target="_blank">@round.CourseName</a></td>
-            <td>@round.GolferName</td>
+            <td>@round.Name</td>
+            <td><a href="@round.Course.Url" target="_blank">@round.Course.Name</a></td>
+            <td>@round.BeerDuty.Name</td>
             <td>@round.Game</td>
         </tr>
     }

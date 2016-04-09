@@ -10,9 +10,9 @@
             @if (Model.Schedule.Count > 0)
             {
                 <div id="avatar">
-                    @if (Model.Schedule[0].Avatar != null)
+                    @if (Model.Schedule[0].BeerDuty.Avatar != null)
                     {
-                        <img src="@(String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(Model.Schedule[0].Avatar)))" />
+                        <img src="@(String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(Model.Schedule[0].BeerDuty.Avatar)))" />
                     }
                     else
                     {
@@ -20,7 +20,7 @@
                     }
                 </div>
                 <div id="avatar-text">
-                    <h3>Beer Duty<br />@(Model.Schedule[0].Date.ToString("M/dd")) @(Model.Schedule[0].GolferName)</h3>
+                    <h3>Beer Duty<br />@(Model.Schedule[0].Date.ToString("M/dd")) @(Model.Schedule[0].BeerDuty.Name)</h3>
                 </div>
             }
         </div>
@@ -73,9 +73,9 @@
                     <tr>
                         <td>@round.Date.ToString("ddd M/dd")</td>
                         <td>@round.Date.ToString("h:mm tt")</td>
-                        <td>@round.RoundName</td>
-                        <td><a href="@round.CourseUrl" target="_blank">@round.CourseName</a></td>
-                        <td>@round.GolferName</td>
+                        <td>@round.Name</td>
+                        <td><a href="@round.Course.Url" target="_blank">@round.Course.Name</a></td>
+                        <td>@round.BeerDuty.Name</td>
                     </tr>
                 }
             </table>
