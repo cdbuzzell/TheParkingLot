@@ -61,3 +61,8 @@ a.navbar-brand {
     margin-top: 11px; 
     margin-right: 5px;
 }
+
+.selector {
+     text-align: right; 
+     margin-top: 20px;
+}

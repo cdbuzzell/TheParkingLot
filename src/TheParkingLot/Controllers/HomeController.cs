@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
-using TheParkingLot.Models;
 using Microsoft.Extensions.OptionsModel;
-using TheParkingLot.ViewModels.Home;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Data.Entity;
+using TheParkingLot.Models;
+using TheParkingLot.ViewModels.Home;
 using TheParkingLot.DataAccess;
+
 
 namespace TheParkingLot.Controllers
 {
@@ -45,19 +46,27 @@ namespace TheParkingLot.Controllers
             return View(model);
         }
 
-        public IActionResult Schedule(string season)
+        public IActionResult Schedule()
         {
             string connectionString = _context.Database.GetDbConnection().ConnectionString;
             HomeDataAccess da = new HomeDataAccess(connectionString);
 
             ScheduleViewModel model = new ScheduleViewModel
             {
-                Seasons = GetSeasons(),
-                Schedule = da.GetSchedule(_appSettings.Value.CurrentSeason)
-                //Schedule = season.HasValue ? _context.GetSchedule(currentSeason) : _context.GetSchedule(season.Value)
+                Seasons = GetSeasons()
             };
 
             return View(model);
+        }
+        
+        public JsonResult ScheduleAjax(int season)
+        {
+            string connectionString = _context.Database.GetDbConnection().ConnectionString;
+            HomeDataAccess da = new HomeDataAccess(connectionString);
+            
+            List<Round> schedule = da.GetSchedule(season);
+
+            return Json(schedule);
         }
 
         public IActionResult Statistics()
@@ -65,20 +74,30 @@ namespace TheParkingLot.Controllers
             string connectionString = _context.Database.GetDbConnection().ConnectionString;
             HomeDataAccess da = new HomeDataAccess(connectionString);
 
-            //TODO: get season and golfer from view
-            string golfer = "golfer";
-            int season = 2014;// _appSettings.Value.CurrentSeason;
-
             StatisticsViewModel model = new StatisticsViewModel
             {
-                Leaderboard = da.GetLeaderboard(season),
-                SeasonStatistics = da.GetGolferRounds(golfer, season),
-                AllStatistics = da.GetGolferTotals(golfer),
+                //TODO: I don't like only populating part of the model
                 Seasons = GetSeasons(),
                 Golfers = da.GetGolfers()
             };
 
             return View(model);
+        }
+
+        public JsonResult StatisticsAjax(int season, string golfer)
+        {
+            string connectionString = _context.Database.GetDbConnection().ConnectionString;
+            HomeDataAccess da = new HomeDataAccess(connectionString);
+
+            StatisticsViewModel model = new StatisticsViewModel
+            {
+                //TODO: I don't like only populating part of the model
+                Leaderboard = da.GetLeaderboard(season),
+                SeasonStatistics = da.GetGolferRounds(golfer, season),
+                AllStatistics = da.GetGolferTotals(golfer)
+            };
+
+            return Json(model);
         }
 
         public IActionResult Error()

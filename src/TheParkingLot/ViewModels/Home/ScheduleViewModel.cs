@@ -9,7 +9,7 @@ namespace TheParkingLot.ViewModels.Home
 {
     public class ScheduleViewModel
     {
-        public List<Round> Schedule { get; set; }
+        //public List<Round> Schedule { get; set; }
         public List<SelectListItem> Seasons { get; set; }
     }
 }

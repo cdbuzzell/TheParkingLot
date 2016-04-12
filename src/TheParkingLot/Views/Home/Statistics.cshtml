@@ -3,17 +3,21 @@
 @{
     ViewData["Title"] = "Statistics";
 }
-<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-md-3">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+    <div class="col-md-9 selector">
+        Season: @(Html.DropDownListFor(m => m.Seasons, Model.Seasons, null, new { onchange = "refreshSeason();" })) &nbsp;
+        Golfer: @(Html.DropDownListFor(m => m.Golfers, new SelectList(Model.Golfers, "Alias", "Name"), null, new { onchange = "refreshGolfer(null);" }))
+    </div>
+</div>
 <div class="row">
     <div class="col-md-4">
-        <div>
-            Season: @(Html.DropDownListFor(m => m.Seasons, Model.Seasons, null, null))
-            Golfer: @(Html.DropDownListFor(m => m.Golfers, new SelectList(Model.Golfers, "Alias", "Name"), null, null))
-            <br />TODO: Display Handicap
-        </div>
         <div id="leaderboard">
-            <h3>[Selected Season] Leaderboard</h3>
-            <table class="table">
+            <h3 id="leaderboard-heading">Leaderboard</h3>
+            <table class="table" id="leaderboard-table">
                 <tr>
                     <th>Rank</th>
                     <th>Golfer</th>
@@ -22,23 +26,12 @@
                     <th class="text-right">Points</th>
                     <th class="text-right">Behind</th>
                 </tr>
-                @foreach (GolferSeasonTotal golfer in Model.Leaderboard)
-                {
-                    <tr>
-                        <td>@golfer.Rank</td>
-                        <td>@golfer.Golfer.Name</td>
-                        <td class="text-right">@golfer.Par3Wins</td>
-                        <td class="text-right">@golfer.GameWins</td>
-                        <td class="text-right">@golfer.TotalPoints</td>
-                        <td class="text-right">@golfer.PointsBehind</td>
-                    </tr>
-                }
             </table>
         </div>
     </div>
     <div class="col-md-8">
-        <h3>[Season] Rounds for [Golfer]</h3>
-        <table class="table">
+        <h3 id="rounds-heading">Rounds</h3>
+        <table class="table" id="rounds-table">
             <tr>
                 <th>Date</th>
                 <th>Round</th>
@@ -49,158 +42,303 @@
                 <th class="text-right">Par3s</th>
                 <th class="text-center">Win</th>
             </tr>
-            @foreach (GolferRound round in Model.SeasonStatistics)
-            {
-                <tr>
-                    <td>@round.Round.Date.ToString("M/dd/yyyy")</td>
-                    <td>@round.Round.Name</td>
-                    <td><a href="@round.Course.Url" target="_blank">@round.Course.Name</a></td>
-                    <td>@round.Round.Game</td>
-                    <td>@round.Score</td>
-                    <td class="text-right">@round.Points</td>
-                    <td class="text-right">@round.Par3sWon</td>
-                    <td class="text-center">@if(round.WonGame) {<i class="fa fa-check-circle"></i>}</td>
-                </tr>
-            }
         </table>
     </div>
     <div id="chart1-container">Loading chart...</div>
+    <div id="chart2-container">Loading chart...</div>
 </div>
 
 @section Scripts {
-    <script type="text/javascript" src="~/lib/fusioncharts-suite-xt/fusioncharts.js"></script>
+<script type="text/javascript" src="~/lib/fusioncharts-suite-xt/fusioncharts.js"></script>
 
-    <script language="javascript" type="text/javascript">
-        $(function () {
+<script language="javascript" type="text/javascript">
+    $(function () {
+        // get season, golfer from url query string
+        var season = getParameterByName("season");
+        var golfer = getParameterByName("golfer");
 
-            var chart1 = {
-                type: 'mscombidy2d',
-                renderAt: 'chart1-container',
-                width: '100%',
-                height: '300',
-                dataFormat: 'json',
-                dataSource: {
-                    "chart": {
-                        "caption": "Inventory by Product Categories",
-                        "bgcolor": "FFFFFF",
-                        "plotgradientcolor": "",
-                        "showalternatehgridcolor": "0",
-                        "showplotborder": "0",
-                        "divlinecolor": "CCCCCC",
-                        "showvalues": "0",
-                        "showcanvasborder": "0",
-                        "pyaxisname": "Cost of Inventory",
-                        "syaxisname": "Units in Inventory",
-                        "numberprefix": "$",
-                        "labeldisplay": "STAGGER",
-                        "slantlabels": "1",
-                        "canvasborderalpha": "0",
-                        "legendshadow": "0",
-                        "legendborderalpha": "0",
-                        "showborder": "0",
-                        "animation": "0"
+        refreshAll(season, golfer);
+    })
+
+    function refreshAll(season, golfer) {
+
+        if (season == null || season == "") {
+            // no season in query string or dropdown changed
+            season = getSelection("Seasons")
+        }
+        else {
+            // season in url query string, so select season in dropdown
+            document.getElementById("Seasons").value = season;
+        }
+
+        if (golfer == null || golfer == "") {
+            // no season in query string or dropdown changed
+            golfer = getSelection("Golfers");
+        }
+        else {
+            // season in url query string, so select season in dropdown
+            document.getElementById("Golfers").value = golfer;
+        }
+
+        // update heading text
+        document.getElementById("leaderboard-heading").innerHTML = season + " Leaderboard";
+        document.getElementById("rounds-heading").innerHTML = season + " Rounds for " + getSelectionText("Golfers");
+
+
+        $.ajax({
+            url: '/Home/StatisticsAjax?season=' + season + '&golfer=' + golfer,
+            type: 'GET',
+            dataType: 'json',
+            success: displayAll
+
+        });
+    }
+
+    function getSelection(field) {
+        var dropdown = document.getElementById(field);
+        return dropdown.options[dropdown.selectedIndex].value;
+    }
+
+    function getSelectionText(field) {
+        var dropdown = document.getElementById(field);
+        return dropdown.options[dropdown.selectedIndex].text;
+    }
+
+    function displayAll(statistics) {
+
+        // selected season leaderboard
+        $("#leaderboard-table").find("tr:gt(0)").remove();
+
+        for (var i = 0; i < statistics.Leaderboard.length; i++) {
+            var golfer = statistics.Leaderboard[i];
+
+            $("#leaderboard-table").append("<tr><td>" + golfer.Rank + "</td>" +
+                "<td>" + golfer.Golfer.Name + "</td>" +
+                "<td class='text-right'>" + golfer.Par3Wins + "</td>" +
+                "<td class='text-right'>" + golfer.GameWins + "</td>" +
+                "<td class='text-right'>" + golfer.TotalPoints + "</td>" +
+                "<td class='text-right'>" + golfer.PointsBehind + "</td></tr>");
+
+        }
+
+        // selected season rounds
+        $("#rounds-table").find("tr:gt(0)").remove();
+
+        for (var i = 0; i < statistics.SeasonStatistics.length; i++) {
+            var round = statistics.SeasonStatistics[i];
+            var date = new Date(round.Round.Date);
+
+            $("#rounds-table").append("<tr><td nowrap>" + date.toDateString() + "</td>" +
+                "<td>" + round.Round.Name + "</td><td nowrap><a href='" + round.Course.Url + "' target='_blank'>" + round.Course.Name + "</a></td>" +
+                "<td>" + round.Round.Game + "</td>" + 
+                "<td nowrap>" + (round.Score == null ? "" : round.Score) + "</td>" + 
+                "<td nowrap>" + (round.Points == null ? "" : round.Points) + "</td>" +
+                "<td nowrap>" + (round.Par3sWon == null ? "" : round.Par3sWon) + "</td>" +
+                "<td nowrap>" + (round.WonGame ? "<i class='fa fa-check-circle'></i>" : "") + "</td></tr>");
+
+        }
+
+        // charts
+        displayChart1(statistics.SeasonStatistics);
+        displayChart2(statistics.AllStatistics);
+    }
+
+    function refreshSeason() {
+        //TODO: only refresh leaderboard, rounds, seasonStats
+        refreshAll(null, null);
+    }
+
+    function refreshGolfer(golfer) {
+        //TODO: only refresh rounds, seasonStats, allStats
+        refreshAll(null, golfer);
+    }
+
+    // season statistics chart
+    function displayChart1(data) {
+
+        var categories = [];
+        var par3s = [];
+        var wins = [];
+        var points = [];
+        var scores = [];
+
+        for (i = 0; i < data.length; i++) {
+            var cat = {};
+            cat["label"] = data[i].Round.Date.split("T")[0];
+            categories.push(cat);
+
+            var par3 = {};
+            par3["value"] = data[i].Par3sWon;
+            par3s.push(par3);
+
+            var win = {};
+            win["value"] = data[i].WonGame ? 1 : null;
+            wins.push(win);
+
+            var point = {};
+            point["value"] = data[i].Points;
+            points.push(point);
+
+            var score = {};
+            score["value"] = data[i].Score;
+            scores.push(score);
+        }
+
+        var chart = {
+            type: 'mscombidy2d',
+            renderAt: 'chart1-container',
+            width: '100%',
+            height: '400',
+            dataFormat: 'json',
+            dataSource: {
+                "chart": {
+                    "caption": getSelection("Seasons") + " Weekly Statistics for " + getSelectionText("Golfers"),
+                    "bgcolor": "FFFFFF",
+                    "plotgradientcolor": "",
+                    "showalternatehgridcolor": "0",
+                    "showplotborder": "0",
+                    "divlinecolor": "CCCCCC",
+                    "showvalues": "1",
+                    "showcanvasborder": "0",
+                    "pyaxisname": "#",
+                    "syaxisname": "Score",
+                    "syaxisMinValue": "30",
+                    "numberprefix": "",
+                    "labeldisplay": "rotate",
+                    "slantlabels": "1",
+                    "canvasborderalpha": "0",
+                    "legendshadow": "0",
+                    "legendborderalpha": "0",
+                    "showborder": "0",
+                    "animation": "0"
+                },
+                "categories": [
+                    {
+                        "category": categories
+                    }
+                ],
+                "dataset": [
+                    {
+                        "seriesname": "Par-3s",
+                        //"color": "008ee4",
+                        "data": par3s
                     },
-                    "categories": [
-                        {
-                            "category": [
-                                {
-                                    "label": "Seafood"
-                                },
-                                {
-                                    "label": "Beverages"
-                                },
-                                {
-                                    "label": "Condiments"
-                                },
-                                {
-                                    "label": "Dairy Products"
-                                },
-                                {
-                                    "label": "Confections"
-                                },
-                                {
-                                    "label": "Meat/Poultry"
-                                },
-                                {
-                                    "label": "Grains/Cereals"
-                                },
-                                {
-                                    "label": "Produce"
-                                }
-                            ]
-                        }
-                    ],
-                    "dataset": [
-                        {
-                            "seriesname": "Cost of Inventory",
-                            "color": "008ee4",
-                            "data": [
-                                {
-                                    "value": "13510"
-                                },
-                                {
-                                    "value": "12480"
-                                },
-                                {
-                                    "value": "12024"
-                                },
-                                {
-                                    "value": "11271"
-                                },
-                                {
-                                    "value": "10392"
-                                },
-                                {
-                                    "value": "5729"
-                                },
-                                {
-                                    "value": "5594"
-                                },
-                                {
-                                    "value": "3549"
-                                }
-                            ]
-                        },
-                        {
-                            "seriesname": "Quantity",
-                            "parentyaxis": "S",
-                            "renderas": "Line",
-                            "color": "f8bd19",
-                            "data": [
-                                {
-                                    "value": "701"
-                                },
-                                {
-                                    "value": "559"
-                                },
-                                {
-                                    "value": "507"
-                                },
-                                {
-                                    "value": "393"
-                                },
-                                {
-                                    "value": "386"
-                                },
-                                {
-                                    "value": "165"
-                                },
-                                {
-                                    "value": "258"
-                                },
-                                {
-                                    "value": "100"
-                                }
-                            ]
-                        }
-                    ]
-                }
-            };
+                    {
+                        "seriesname": "Wins",
+                        "data": wins
+                    },
+                    {
+                        "seriesname": "Points",
+                        "data": points
+                    },
+                    {
+                        "seriesname": "Score",
+                        "parentyaxis": "S",
+                        "renderas": "Line",
+                        //"color": "f8bd19",
+                        "data": scores
+                    }
+                ]
+            }
+        };
 
-            FusionCharts.ready(function (FusionCharts) {
-                var fusionChart = new FusionCharts(chart1);
-                fusionChart.render('chart1-container');
-            });
-        })
-    </script>
+        FusionCharts.ready(function (FusionCharts) {
+            var fusionChart = new FusionCharts(chart);
+            fusionChart.render('chart1-container');
+        });
+    }
+
+    // all seasons summary statistics chart
+    function displayChart2(data) {
+        var categories = [];
+        var par3s = [];
+        var wins = [];
+        var points = [];
+        var scores = [];
+
+        for (i = 0; i < data.length; i++) {
+            var cat = {};
+            cat["label"] = data[i].Season.toString();
+            categories.push(cat);
+
+            var par3 = {};
+            par3["value"] = data[i].Par3Wins;
+            par3s.push(par3);
+
+            var win = {};
+            win["value"] = data[i].GameWins;
+            wins.push(win);
+
+            var point = {};
+            point["value"] = data[i].TotalPoints;
+            points.push(point);
+
+            var score = {};
+            score["value"] = data[i].AverageToPar;
+            scores.push(score);
+        }
+
+        var chart = {
+            type: 'mscombidy2d',
+            renderAt: 'chart2-container',
+            width: '100%',
+            height: '400',
+            dataFormat: 'json',
+            dataSource: {
+                "chart": {
+                    "caption": "Season Statistics for " + getSelectionText("Golfers"),
+                    "bgcolor": "FFFFFF",
+                    "plotgradientcolor": "",
+                    "showalternatehgridcolor": "0",
+                    "showplotborder": "0",
+                    "divlinecolor": "CCCCCC",
+                    "showvalues": "1",
+                    "showcanvasborder": "0",
+                    "pyaxisname": "#",
+                    "syaxisname": "Average",
+                    "syaxisMinValue": "30",
+                    "numberprefix": "",
+                    "labeldisplay": "",
+                    "slantlabels": "0",
+                    "canvasborderalpha": "0",
+                    "legendshadow": "0",
+                    "legendborderalpha": "0",
+                    "showborder": "0",
+                    "animation": "0"
+                },
+                "categories": [
+                    {
+                        "category": categories
+                    }
+                ],
+                "dataset": [
+                    {
+                        "seriesname": "Par-3s",
+                        "data": par3s
+                    },
+                    {
+                        "seriesname": "Wins",
+                        "data": wins
+                    },
+                    {
+                        "seriesname": "Points",
+                        "data": points
+                    },
+                    {
+                        "seriesname": "+/- Average",
+                        "parentyaxis": "S",
+                        "renderas": "Line",
+                        "data": scores
+                    }
+                ]
+            }
+        };
+
+        FusionCharts.ready(function (FusionCharts) {
+            var fusionChart = new FusionCharts(chart);
+            fusionChart.render('chart2-container');
+        });
+
+    }
+</script>
 }
