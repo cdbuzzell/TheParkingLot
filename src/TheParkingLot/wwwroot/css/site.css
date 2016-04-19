@@ -48,6 +48,10 @@ a.navbar-brand {
     float: left;
 }
 
+#avatar img {
+    border-radius: 10px;
+}
+
 #avatar-text {
     padding-top: 5px;
     width: 200px;
