@@ -35,7 +35,7 @@ namespace TheParkingLot.Controllers
             List<GolferSeasonTotal> leaderboard = da.GetLeaderboard(season);
 
             // filter schedule to upcoming dates only
-            List<Round> schedule = da.GetSchedule(season).Where(round => round.Date >= DateTime.Now).ToList();
+            List<Round> schedule = da.GetSchedule(season).Where(round => round.Date.Ticks >= DateTime.Now.Ticks).ToList();
 
             IndexViewModel model = new IndexViewModel
             {

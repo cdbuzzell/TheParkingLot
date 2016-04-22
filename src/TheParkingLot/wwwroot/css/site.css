@@ -70,3 +70,8 @@ a.navbar-brand {
      text-align: right; 
      margin-top: 20px;
 }
+
+#leaderboard {
+    clear: both;
+    padding-top: 10px;
+}
