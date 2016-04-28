@@ -35,7 +35,13 @@ namespace TheParkingLot.Controllers
             List<GolferSeasonTotal> leaderboard = da.GetLeaderboard(season);
 
             // filter schedule to upcoming dates only
-            List<Round> schedule = da.GetSchedule(season).Where(round => round.Date.Ticks >= DateTime.Now.Ticks).ToList();
+            DateTime today = DateTime.Now.AddHours(-5); //TODO: azure sql server is local while DateTime.Now is UTC, so this is a hack until I figure out how to get it to work the right way
+            List<Round> schedule = da.GetSchedule(season).Where(round => DateTime.Compare(round.Date, today) >= 0).ToList();
+
+            //ViewData["tempdebug"] = String.Format("schedule = {0}, now = {1}, compare = {2}", 
+            //    schedule[0].Date.ToString(), 
+            //    today.ToString(), 
+            //    DateTime.Compare(schedule[0].Date, today));
 
             IndexViewModel model = new IndexViewModel
             {
