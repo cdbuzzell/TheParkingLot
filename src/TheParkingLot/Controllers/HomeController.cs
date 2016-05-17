@@ -111,6 +111,39 @@ namespace TheParkingLot.Controllers
             return View();
         }
 
+        public IActionResult Champions()
+        {
+            // get year from appSettings
+            int season = _appSettings.Value.CurrentSeason;
+
+            // get champs for all seasons, then filter out current season because we may not be done yet
+            string connectionString = _context.Database.GetDbConnection().ConnectionString;
+            HomeDataAccess da = new HomeDataAccess(connectionString);
+
+            // filter to exclude current season because it may still be in-progress
+            List<GolferSeasonTotal> golfers = da.GetChampions().Where(golfer => !golfer.Season.Equals(season)).ToList();
+
+            List<SeasonChampion> champions = new List<SeasonChampion>();
+
+            for (int i = 0; i < golfers.Count-3; i=i+3)
+            {
+                // group 3 golfers into a single object
+                champions.Add(new SeasonChampion {
+                    Season = golfers[i].Season,
+                    Champion = golfers[i],
+                    RunnerUp = golfers[i+1],
+                    SecondRunnerUp = golfers[i+2]
+                });
+            }
+
+            ChampionsViewModel model = new ChampionsViewModel
+            {
+                Champions = champions
+            };
+
+            return View(model);
+        }
+
         private List<SelectListItem> GetSeasons()
         {
             int currentSeason = _appSettings.Value.CurrentSeason;

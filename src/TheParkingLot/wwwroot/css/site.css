@@ -36,6 +36,7 @@ textarea {
 a.navbar-brand {
     font-weight: bold;
     text-transform: uppercase;
+    margin-top: -8px;
 }
 
 #avatar {
@@ -48,7 +49,7 @@ a.navbar-brand {
     float: left;
 }
 
-#avatar img {
+#avatar img, .avatar {
     border-radius: 10px;
 }
 
@@ -60,12 +61,6 @@ a.navbar-brand {
     float: left;
 }
 
-#logo {
-    float: left; 
-    margin-top: 11px; 
-    margin-right: 5px;
-}
-
 .selector {
      text-align: right; 
      margin-top: 20px;
@@ -74,4 +69,15 @@ a.navbar-brand {
 #leaderboard {
     clear: both;
     padding-top: 10px;
+}
+
+i.logo {
+    font-family: inherit;
+    font-size: 11px;
+    color: black;
+    font-weight: 900;
+}
+
+#champions td {
+    vertical-align: middle;
 }

@@ -1,0 +1,45 @@
+﻿@inject IOptions<AppSettings> AppSettings
+@using TheParkingLot.ViewModels.Home
+@model TheParkingLot.ViewModels.Home.ChampionsViewModel
+@{
+    ViewData["Title"] = "Season Champions";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table" id="champions">
+    <tr>
+        <th>Season</th>
+        <th>Champion</th>
+        <th>Par-3s</th>
+        <th>Wins</th>
+        <th>Points</th>
+        <th>Runners Up</th>
+    </tr>
+    @foreach (SeasonChampion season in Model.Champions)
+    {
+        <tr>
+            <td class="fa-2x">@season.Season</td>
+            <td>
+                @if (season.Champion.Golfer.Avatar != null)
+                {
+                    <img class="avatar" src="@(String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(season.Champion.Golfer.Avatar)))" />
+                }
+                else
+                {
+                    <img class="avatar" src="~/images/avatar.jpg" />
+                }
+                <a href="/Home/Statistics?golfer=@season.Champion.Golfer.Alias&season=@season.Season" class="fa-2x">@season.Champion.Golfer.Name</a>
+            </td>
+            <td>@season.Champion.Par3Wins</td>
+            <td>@season.Champion.GameWins</td>
+            <td>@season.Champion.TotalPoints</td>
+            <td>
+                2nd: <a href="/Home/Statistics?golfer=@season.RunnerUp.Golfer.Alias&season=@season.Season">@season.RunnerUp.Golfer.Name</a>
+                <br />
+                3rd:
+                <a href="/Home/Statistics?golfer=@season.SecondRunnerUp.Golfer.Alias&season=@season.Season">@season.SecondRunnerUp.Golfer.Name</a>
+            </td>
+        </tr>
+    }
+</table>

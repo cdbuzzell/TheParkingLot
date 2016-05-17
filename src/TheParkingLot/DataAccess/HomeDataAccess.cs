@@ -239,5 +239,45 @@ namespace TheParkingLot.DataAccess
 
             return golfers;
         }
+
+        public List<GolferSeasonTotal> GetChampions()
+        {
+            List<GolferSeasonTotal> leaderboard = new List<GolferSeasonTotal>();
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("GetChampions", connection))
+                {
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            leaderboard.Add(new GolferSeasonTotal
+                            {
+                                Golfer = new Golfer
+                                {
+                                    GolferId = reader["GolferId"] == DBNull.Value ? Guid.Empty : (Guid)reader["GolferId"],
+                                    Alias = reader["Alias"].ToString(),
+                                    Name = reader["GolferName"].ToString(),
+                                    Avatar = reader["Avatar"] == DBNull.Value ? null : (byte[])reader["Avatar"]
+                                },
+                                Rank = (Int64)reader["Rank"],
+                                Par3Wins = (int)reader["Par3Wins"],
+                                GameWins = (int)reader["GameWins"],
+                                TotalPoints = (double)reader["TotalPoints"],
+                                Season = (int)reader["Season"]
+                            });
+                        }
+                    }
+
+                    connection.Close();
+                }
+            }
+
+            return leaderboard;
+        }
     }
 }
