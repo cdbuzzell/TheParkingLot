@@ -1,0 +1,71 @@
+﻿@inject IOptions<AppSettings> AppSettings
+@model TheParkingLot.ViewModels.Home.ScheduleViewModel
+@{
+    ViewData["Title"] = "Schedule";
+}
+
+<div class="row">
+    <div class="col-md-3">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+    <div class="col-md-9 selector">
+        Season: @(Html.DropDownListFor(m => m.Seasons, Model.Seasons, null, new { onchange = "getSchedule(null);" }))
+    </div>
+</div>
+
+<table class="table" id="schedule">
+    <tr>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Event</th>
+        <th>Course</th>
+        <th>Beer Duty</th>
+        <th>Game</th>
+    </tr>
+</table>
+
+@section Scripts {
+    <script language="javascript" type="text/javascript">
+        $(function () {
+            // get season from url query string
+            var season = getParameterByName("season");
+            getSchedule(season);
+        })
+
+        function getSchedule(season) {
+            if (season == null || season == "") {
+                // no season in query string or dropdown changed
+                var dropdown = document.getElementById("Seasons");
+                season = dropdown.options[dropdown.selectedIndex].value;
+            }
+            else {
+                // season in url query string, so select season in dropdown
+                document.getElementById("Seasons").value = season;
+            }
+
+            $.ajax({
+                url: '/Home/ScheduleAjax?season=' + season,
+                type: 'GET',
+                dataType: 'json',
+                success: displaySchedule
+            });
+        }
+
+        function displaySchedule(schedule) {
+            $("#schedule").find("tr:gt(0)").remove();
+
+            for (var i = 0; i < schedule.length; i++) {
+                var round = schedule[i];
+                var date = new Date(round.Date);
+
+                $("#schedule").append("<tr><td nowrap>" + date.toDateString() + "</td>" + 
+                    "<td nowrap>" + date.toLocaleTimeString() + "</td>" +
+                    "<td nowrap>" + round.Name + "</td>" +
+                    "<td nowrap><a href='" + round.Course.Url + "' target='_blank'>" + round.Course.Name + "</a></td>" +
+                    "<td nowrap>" + round.BeerDuty.Name + "</td>" + 
+                    "<td>" + round.Game + "</td></tr>");
+
+            }
+        }
+    </script>
+}
