@@ -56,14 +56,14 @@
 
             for (var i = 0; i < schedule.length; i++) {
                 var round = schedule[i];
-                var date = new Date(round.Date);
+                var date = new Date(round.date);
 
                 $("#schedule").append("<tr><td nowrap>" + date.toDateString() + "</td>" + 
                     "<td nowrap>" + date.toLocaleTimeString() + "</td>" +
-                    "<td nowrap>" + round.Name + "</td>" +
-                    "<td nowrap><a href='" + round.Course.Url + "' target='_blank'>" + round.Course.Name + "</a></td>" +
-                    "<td nowrap>" + round.BeerDuty.Name + "</td>" + 
-                    "<td>" + round.Game + "</td></tr>");
+                    "<td nowrap>" + round.name + "</td>" +
+                    "<td nowrap><a href='" + round.course.url + "' target='_blank'>" + round.course.name + "</a></td>" +
+                    "<td nowrap>" + round.beerDuty.name + "</td>" + 
+                    "<td>" + round.game + "</td></tr>");
 
             }
         }

@@ -109,38 +109,38 @@
         // selected season leaderboard
         $("#leaderboard-table").find("tr:gt(0)").remove();
 
-        for (var i = 0; i < statistics.Leaderboard.length; i++) {
-            var golfer = statistics.Leaderboard[i];
+        for (var i = 0; i < statistics.leaderboard.length; i++) {
+            var golfer = statistics.leaderboard[i];
 
-            $("#leaderboard-table").append("<tr><td>" + golfer.Rank + "</td>" +
-                "<td>" + golfer.Golfer.Name + "</td>" +
-                "<td class='text-right'>" + golfer.Par3Wins + "</td>" +
-                "<td class='text-right'>" + golfer.GameWins + "</td>" +
-                "<td class='text-right'>" + golfer.TotalPoints + "</td>" +
-                "<td class='text-right'>" + golfer.PointsBehind.toFixed(0) + "</td></tr>");
+            $("#leaderboard-table").append("<tr><td>" + golfer.rank + "</td>" +
+                "<td>" + golfer.golfer.name + "</td>" +
+                "<td class='text-right'>" + golfer.par3Wins + "</td>" +
+                "<td class='text-right'>" + golfer.gameWins + "</td>" +
+                "<td class='text-right'>" + golfer.totalPoints + "</td>" +
+                "<td class='text-right'>" + golfer.pointsBehind.toFixed(0) + "</td></tr>");
 
         }
 
         // selected season rounds
         $("#rounds-table").find("tr:gt(0)").remove();
 
-        for (var i = 0; i < statistics.SeasonStatistics.length; i++) {
-            var round = statistics.SeasonStatistics[i];
-            var date = new Date(round.Round.Date);
+        for (var i = 0; i < statistics.seasonStatistics.length; i++) {
+            var round = statistics.seasonStatistics[i];
+            var date = new Date(round.round.date);
 
             $("#rounds-table").append("<tr><td nowrap>" + date.toDateString() + "</td>" +
-                "<td>" + round.Round.Name + "</td><td nowrap><a href='" + round.Course.Url + "' target='_blank'>" + round.Course.Name + "</a></td>" +
-                "<td>" + round.Round.Game + "</td>" + 
-                "<td nowrap>" + (round.Score == null ? "" : round.Score) + "</td>" + 
-                "<td nowrap>" + (round.Points == null ? "" : round.Points) + "</td>" +
-                "<td nowrap>" + (round.Par3sWon == null ? "" : round.Par3sWon) + "</td>" +
-                "<td nowrap>" + (round.WonGame ? "<i class='fa fa-check-circle'></i>" : "") + "</td></tr>");
+                "<td>" + round.round.name + "</td><td nowrap><a href='" + round.course.url + "' target='_blank'>" + round.course.name + "</a></td>" +
+                "<td>" + round.round.game + "</td>" + 
+                "<td nowrap>" + (round.score == null ? "" : round.score) + "</td>" + 
+                "<td nowrap>" + (round.points == null ? "" : round.points) + "</td>" +
+                "<td nowrap>" + (round.par3sWon == null ? "" : round.par3sWon) + "</td>" +
+                "<td nowrap>" + (round.wonGame ? "<i class='fa fa-check-circle'></i>" : "") + "</td></tr>");
 
         }
 
         // charts
-        displayChart1(statistics.SeasonStatistics);
-        displayChart2(statistics.AllStatistics);
+        displayChart1(statistics.seasonStatistics);
+        displayChart2(statistics.allStatistics);
     }
 
     function refreshSeason() {
@@ -164,23 +164,23 @@
 
         for (i = 0; i < data.length; i++) {
             var cat = {};
-            cat["label"] = data[i].Round.Date.split("T")[0];
+            cat["label"] = data[i].round.date.split("T")[0];
             categories.push(cat);
 
             var par3 = {};
-            par3["value"] = data[i].Par3sWon;
+            par3["value"] = data[i].par3sWon;
             par3s.push(par3);
 
             var win = {};
-            win["value"] = data[i].WonGame ? 1 : null;
+            win["value"] = data[i].wonGame ? 1 : null;
             wins.push(win);
 
             var point = {};
-            point["value"] = data[i].Points;
+            point["value"] = data[i].points;
             points.push(point);
 
             var score = {};
-            score["value"] = data[i].Score;
+            score["value"] = data[i].score;
             scores.push(score);
         }
 
@@ -258,23 +258,23 @@
 
         for (i = 0; i < data.length; i++) {
             var cat = {};
-            cat["label"] = data[i].Season.toString();
+            cat["label"] = data[i].season.toString();
             categories.push(cat);
 
             var par3 = {};
-            par3["value"] = data[i].Par3Wins;
+            par3["value"] = data[i].par3Wins;
             par3s.push(par3);
 
             var win = {};
-            win["value"] = data[i].GameWins;
+            win["value"] = data[i].gameWins;
             wins.push(win);
 
             var point = {};
-            point["value"] = data[i].TotalPoints;
+            point["value"] = data[i].totalPoints;
             points.push(point);
 
             var score = {};
-            score["value"] = data[i].AverageToPar;
+            score["value"] = data[i].averageToPar;
             scores.push(score);
         }
 

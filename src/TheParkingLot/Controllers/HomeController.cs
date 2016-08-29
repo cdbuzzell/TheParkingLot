@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
-using Microsoft.Extensions.OptionsModel;
-using Microsoft.AspNet.Mvc.Rendering;
-using Microsoft.Data.Entity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using TheParkingLot.Models;
 using TheParkingLot.ViewModels.Home;
 using TheParkingLot.DataAccess;
@@ -125,7 +125,7 @@ namespace TheParkingLot.Controllers
 
             List<SeasonChampion> champions = new List<SeasonChampion>();
 
-            for (int i = 0; i < golfers.Count-3; i=i+3)
+            for (int i = 0; i <= golfers.Count-3; i=i+3)
             {
                 // group 3 golfers into a single object
                 champions.Add(new SeasonChampion {

@@ -180,6 +180,7 @@ ClientBin/
 ~$*
 *~
 *.dbmdl
+*.jfm
 *.dbproj.schemaview
 *.pfx
 *.publishsettings
