@@ -11,6 +11,6 @@ namespace TheParkingLot.ViewModels.Home
     {
         public List<GolferSeasonTotal> Leaderboard { get; set; }
         public List<Round> Schedule { get; set; }
-        //public Golfer BeerDuty { get; set; }
+        public List<SeasonChampion> Champions { get; set; }
     }
 }

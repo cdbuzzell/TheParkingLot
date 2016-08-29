@@ -43,10 +43,18 @@ namespace TheParkingLot.Controllers
             //    today.ToString(), 
             //    DateTime.Compare(schedule[0].Date, today));
 
+            List<SeasonChampion> champions = new List<SeasonChampion>();
+            // only display past champions if we have <10 rounds remaining this year to fill the page
+            if (schedule.Count < 10)
+            {
+                champions = GetChampions();
+            }
+
             IndexViewModel model = new IndexViewModel
             {
                 Leaderboard = leaderboard,
-                Schedule = schedule
+                Schedule = schedule,
+                Champions = champions
             };
 
             return View(model);
@@ -113,6 +121,18 @@ namespace TheParkingLot.Controllers
 
         public IActionResult Champions()
         {
+            List<SeasonChampion> champions = GetChampions();
+
+            ChampionsViewModel model = new ChampionsViewModel
+            {
+                Champions = champions
+            };
+
+            return View(model);
+        }
+
+        private List<SeasonChampion> GetChampions()
+        {
             // get year from appSettings
             int season = _appSettings.Value.CurrentSeason;
 
@@ -125,10 +145,11 @@ namespace TheParkingLot.Controllers
 
             List<SeasonChampion> champions = new List<SeasonChampion>();
 
-            for (int i = 0; i <= golfers.Count-3; i=i+3)
+            for (int i = 0; i <= golfers.Count-3; i = i+3)
             {
                 // group 3 golfers into a single object
-                champions.Add(new SeasonChampion {
+                champions.Add(new SeasonChampion
+                {
                     Season = golfers[i].Season,
                     Champion = golfers[i],
                     RunnerUp = golfers[i+1],
@@ -136,12 +157,7 @@ namespace TheParkingLot.Controllers
                 });
             }
 
-            ChampionsViewModel model = new ChampionsViewModel
-            {
-                Champions = champions
-            };
-
-            return View(model);
+            return champions;
         }
 
         private List<SelectListItem> GetSeasons()
