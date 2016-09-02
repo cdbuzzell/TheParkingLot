@@ -131,6 +131,19 @@ namespace TheParkingLot.Controllers
             return View(model);
         }
 
+        public IActionResult Members()
+        {
+            string connectionString = _context.Database.GetDbConnection().ConnectionString;
+            HomeDataAccess da = new HomeDataAccess(connectionString);
+
+            MembersViewModel model = new MembersViewModel
+            {
+                GolferSummaries = da.GetGolferSummaries(_appSettings.Value.CurrentSeason)
+            };
+
+            return View(model);
+        }
+
         private List<SeasonChampion> GetChampions()
         {
             // get year from appSettings

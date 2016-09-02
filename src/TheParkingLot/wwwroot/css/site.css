@@ -78,8 +78,24 @@ i.logo {
     font-weight: 900;
 }
 
-#champions td {
+#champions td, #members td {
     vertical-align: middle;
+}
+
+.align-right{
+    text-align: right;
+}
+
+.align-center{
+    text-align: center;
+}
+
+.align-middle{
+    vertical-align: middle;
+}
+
+th.border-left, td.border-left{
+    border-left: 1px solid #ddd;
 }
 
 /*

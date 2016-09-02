@@ -221,15 +221,7 @@ namespace TheParkingLot.DataAccess
                     {
                         while (reader.Read())
                         {
-                            golfers.Add(new Golfer
-                            {
-                                GolferId = reader["GolferId"] == DBNull.Value ? Guid.Empty : (Guid)reader["GolferId"],
-                                Name = reader["Name"].ToString(),
-                                Alias = reader["Alias"].ToString(),
-                                Avatar = reader["Avatar"] == DBNull.Value ? null : (byte[]) reader["Avatar"],
-                                Enabled = Convert.ToBoolean(reader["Enabled"]),
-                                BringsBeer = Convert.ToBoolean(reader["BringsBeer"])
-                            });
+                            golfers.Add(BuildGolfer(reader));
                         }
                     }
 
@@ -278,6 +270,61 @@ namespace TheParkingLot.DataAccess
             }
 
             return leaderboard;
+        }
+
+        public List<GolferSummary> GetGolferSummaries(int season)
+        {
+            List<GolferSummary> summaries = new List<GolferSummary>();
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("GetGolfersSummary", connection))
+                {
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@Season", season);
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            summaries.Add(new GolferSummary
+                            {
+                                Golfer = BuildGolfer(reader),
+                                CurrentTotals = new GolferTotals
+                                {
+                                    AverageToPar = reader["CurrentAverage"] == DBNull.Value ? (int?)null : (int)reader["CurrentAverage"],
+                                    Par3Wins = reader["CurrentPar3Wins"] == DBNull.Value ? 0 : (int)reader["CurrentPar3Wins"],
+                                    GameWins = reader["CurrentGameWins"] == DBNull.Value ? 0 : (int)reader["CurrentGameWins"]
+                                },
+                                CareerTotals = new GolferTotals
+                                {
+                                    AverageToPar = reader["CareerAverage"] == DBNull.Value ? (int?)null : (int)reader["CareerAverage"],
+                                    Par3Wins = reader["CareerPar3Wins"] == DBNull.Value ? 0 : (int)reader["CareerPar3Wins"],
+                                    GameWins = reader["CareerGameWins"] == DBNull.Value ? 0 : (int)reader["CareerGameWins"]
+                                }
+                            });
+                        }
+                    }
+
+                    connection.Close();
+                }
+            }
+
+            return summaries;
+        }
+
+        private Golfer BuildGolfer(SqlDataReader reader)
+        {
+            return new Golfer
+            {
+                GolferId = reader["GolferId"] == DBNull.Value ? Guid.Empty : (Guid)reader["GolferId"],
+                Name = reader["Name"].ToString(),
+                Alias = reader["Alias"].ToString(),
+                Avatar = reader["Avatar"] == DBNull.Value ? null : (byte[])reader["Avatar"],
+                Enabled = Convert.ToBoolean(reader["Enabled"]),
+                BringsBeer = Convert.ToBoolean(reader["BringsBeer"])
+            };
         }
     }
 }

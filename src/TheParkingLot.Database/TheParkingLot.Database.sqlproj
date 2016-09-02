@@ -78,5 +78,8 @@
     <Build Include="dbo\Stored Procedures\GetGolferTotals.sql" />
     <Build Include="dbo\Stored Procedures\GetGolfers.sql" />
     <Build Include="dbo\Stored Procedures\GetChampions.sql" />
+    <Build Include="dbo\Views\SeasonTotals.sql" />
+    <Build Include="dbo\Views\CareerTotals.sql" />
+    <Build Include="dbo\Stored Procedures\GetGolfersSummary.sql" />
   </ItemGroup>
 </Project>

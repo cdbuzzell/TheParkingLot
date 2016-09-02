@@ -1,0 +1,47 @@
+﻿@inject IOptions<AppSettings> AppSettings
+@using TheParkingLot.ViewModels.Home
+@model TheParkingLot.ViewModels.Home.MembersViewModel
+@{
+    ViewData["Title"] = "Members";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table" id="members">
+    <tr>
+        <th>&nbsp;</th>
+        <th colspan="3" class="align-center">Current Season</th>
+        <th colspan="3" class="align-center border-left">Career</th>
+    </tr>
+    <tr>
+        <th>Member</th>
+        <th class="align-right">Avg</th>
+        <th class="align-right">Par-3s</th>
+        <th class="align-right">Wins</th>
+        <th class="align-right border-left">Avg</th>
+        <th class="align-right">Par-3s</th>
+        <th class="align-right">Wins</th>
+    </tr>
+    @foreach (GolferSummary summary in Model.GolferSummaries)
+    {
+        <tr>
+            <td>
+                @if (summary.Golfer.Avatar != null)
+                {
+                    <img class="avatar" src="@(String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(summary.Golfer.Avatar)))" />
+                }
+                else
+                {
+                    <img class="avatar" src="~/images/avatar.jpg" />
+                }
+                <a href="/Home/Statistics?golfer=@summary.Golfer.Alias" class="fa-2x">@summary.Golfer.Name</a>
+            </td>
+            <td class="fa-2x align-right">+@summary.CurrentTotals.AverageToPar</td>
+            <td class="fa-2x align-right">@summary.CurrentTotals.Par3Wins</td>
+            <td class="fa-2x align-right">@summary.CurrentTotals.GameWins</td>
+            <td class="fa-2x align-right border-left">+@summary.CareerTotals.AverageToPar</td>
+            <td class="fa-2x align-right">@summary.CareerTotals.Par3Wins</td>
+            <td class="fa-2x align-right">@summary.CareerTotals.GameWins</td>
+        </tr>
+    }
+</table>
