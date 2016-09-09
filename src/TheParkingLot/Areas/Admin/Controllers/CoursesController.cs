@@ -9,12 +9,12 @@ using Microsoft.Extensions.Options;
 namespace TheParkingLot.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class RoundController : Controller
+    public class CoursesController : Controller
     {
         private ApplicationDbContext _context;
         private IOptions<AppSettings> _appSettings;
 
-        public RoundController(ApplicationDbContext context, IOptions<AppSettings> appSettings)
+        public CoursesController(ApplicationDbContext context, IOptions<AppSettings> appSettings)
         {
             _context = context;
             _appSettings = appSettings;

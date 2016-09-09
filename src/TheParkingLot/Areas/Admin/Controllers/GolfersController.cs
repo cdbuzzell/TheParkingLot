@@ -9,18 +9,23 @@ using Microsoft.Extensions.Options;
 namespace TheParkingLot.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class CourseController : Controller
+    public class GolfersController : Controller
     {
         private ApplicationDbContext _context;
         private IOptions<AppSettings> _appSettings;
 
-        public CourseController(ApplicationDbContext context, IOptions<AppSettings> appSettings)
+        public GolfersController(ApplicationDbContext context, IOptions<AppSettings> appSettings)
         {
             _context = context;
             _appSettings = appSettings;
         }
 
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult Notify()
         {
             return View();
         }

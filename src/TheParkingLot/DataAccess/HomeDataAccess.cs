@@ -106,6 +106,15 @@ namespace TheParkingLot.DataAccess
 
             return schedule;
         }
+
+        public List<GolferRound> GetRoundGolfers(Guid roundId)
+        {
+            List<GolferRound> roundGolfers = new List<GolferRound>();
+
+            //TODO: finish
+
+            return roundGolfers;
+        }
         
         public List<GolferRound> GetGolferRounds(string alias, int season)
         {

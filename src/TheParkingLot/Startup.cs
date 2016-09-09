@@ -98,7 +98,7 @@ namespace TheParkingLot
                 routes.MapRoute(
                     name: "areaRoute",
                     template: "{area:exists}/{controller}/{action}",
-                    defaults: new { action = "Index" });
+                    defaults: new { controller = "Rounds", action = "Index" });
 
                 routes.MapRoute(
                     name: "default",

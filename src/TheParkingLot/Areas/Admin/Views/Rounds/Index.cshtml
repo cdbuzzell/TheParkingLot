@@ -1,0 +1,27 @@
+﻿@inject IOptions<AppSettings> AppSettings
+@{
+    ViewData["Title"] = "Rounds";
+}
+<table class="table" id="schedule">
+    <tr>
+        <th></th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Event</th>
+        <th>Course</th>
+        <th>Beer Duty</th>
+        <th>Game</th>
+    </tr>
+    @foreach (Round round in Model.Rounds)
+    {
+        <tr>
+            <td>Edit | @Html.ActionLink("Scores", "Scores", new { id = round.RoundId })</td>
+            <td>@round.Date.ToString("ddd M/dd")</td>
+            <td>@round.Date.ToString("h:mm tt")</td>
+            <td>@round.Name</td>
+            <td><a href="@round.Course.Url" target="_blank">@round.Course.Name</a></td>
+            <td>@round.BeerDuty.Name</td>
+            <td>@round.Game</td>
+        </tr>
+    }
+</table>

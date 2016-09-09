@@ -3,7 +3,7 @@
 -- Create date: 9/2/2016
 -- Description:	Get all Golfers + their current season and career totals
 -- =============================================
-CREATE PROCEDURE GetGolfersSummary
+CREATE PROCEDURE [dbo].[GetGolfersSummary]
 	@Season int
 AS
 BEGIN

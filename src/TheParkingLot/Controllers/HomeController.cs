@@ -62,9 +62,6 @@ namespace TheParkingLot.Controllers
 
         public IActionResult Schedule()
         {
-            string connectionString = _context.Database.GetDbConnection().ConnectionString;
-            HomeDataAccess da = new HomeDataAccess(connectionString);
-
             ScheduleViewModel model = new ScheduleViewModel
             {
                 Seasons = GetSeasons()
