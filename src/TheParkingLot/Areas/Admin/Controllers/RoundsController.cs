@@ -8,10 +8,12 @@ using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using TheParkingLot.DataAccess;
 using TheParkingLot.ViewModels.Admin;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TheParkingLot.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize("Administrator")]
     public class RoundsController : Controller
     {
         private ApplicationDbContext _context;

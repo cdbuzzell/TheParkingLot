@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using TheParkingLot.Models;
 using TheParkingLot.Services;
 using TheParkingLot.ViewModels.Account;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace TheParkingLot.Controllers
 {
@@ -20,6 +21,7 @@ namespace TheParkingLot.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<ApplicationUser> _roleManager;
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
@@ -437,6 +439,11 @@ namespace TheParkingLot.Controllers
                 ModelState.AddModelError("", "Invalid code.");
                 return View(model);
             }
+        }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
 
         #region Helpers

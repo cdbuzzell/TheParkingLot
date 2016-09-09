@@ -46,11 +46,13 @@ namespace TheParkingLot
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>(options => { options.Cookies.ApplicationCookie.LoginPath = "/Account/Login"; })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
             services.AddMvc();
+
+            services.AddAuthorization(options => options.AddPolicy("Administrator", policy => policy.RequireRole("Administrator")));
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
