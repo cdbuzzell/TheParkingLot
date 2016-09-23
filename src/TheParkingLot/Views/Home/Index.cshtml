@@ -58,28 +58,31 @@
                 src="http://forecast.io/embed/#lat=@AppSettings.Value.WeatherDefaultLat&lon=@AppSettings.Value.WeatherDefaultLong&name=@AppSettings.Value.WeatherDefaultName&color=#00aaff&font=Segoe UI&units=us">
         </iframe>
 
-        <div id="rounds">
-            <h3>Upcoming Rounds</h3>
-            <table class="table">
-                <tr>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Event</th>
-                    <th>Course</th>
-                    <th>Beer Duty</th>
-                </tr>
-                @foreach (Round round in Model.Schedule)
-                {
+        @if (Model.Schedule.Count > 0)
+        {
+            <div id="rounds">
+                <h3>Upcoming Rounds</h3>
+                <table class="table">
                     <tr>
-                        <td>@round.Date.ToString("ddd M/dd")</td>
-                        <td>@round.Date.ToString("h:mm tt")</td>
-                        <td>@round.Name</td>
-                        <td><a href="@round.Course.Url" target="_blank">@round.Course.Name</a></td>
-                        <td>@round.BeerDuty.Name</td>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Event</th>
+                        <th>Course</th>
+                        <th>Beer Duty</th>
                     </tr>
-                }
-            </table>
-        </div>
+                    @foreach (Round round in Model.Schedule)
+                    {
+                        <tr>
+                            <td>@round.Date.ToString("ddd M/dd")</td>
+                            <td>@round.Date.ToString("h:mm tt")</td>
+                            <td>@round.Name</td>
+                            <td><a href="@round.Course.Url" target="_blank">@round.Course.Name</a></td>
+                            <td>@round.BeerDuty.Name</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        }
 
         @if (Model.Champions.Count > 0)
         {
@@ -95,7 +98,7 @@
                         <th>Runners Up</th>
                     </tr>
                     @foreach (SeasonChampion season in Model.Champions)
-                {
+                    {
                         <tr>
                             <td class="fa-2x">@season.Season</td>
                             <td>
