@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DA1E0655-771D-46C2-B240-B228EA64409A}"
 EndProject
@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TheParkingLot", "src\TheParkingLot\TheParkingLot.xproj", "{97D9D8D8-13A3-4BFA-9B1A-328A699A0202}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheParkingLot", "src\TheParkingLot\TheParkingLot.csproj", "{97D9D8D8-13A3-4BFA-9B1A-328A699A0202}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "TheParkingLot.Database", "src\TheParkingLot.Database\TheParkingLot.Database.sqlproj", "{26B350AF-C807-47E5-A64F-4918070F9892}"
 EndProject
@@ -41,5 +41,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{97D9D8D8-13A3-4BFA-9B1A-328A699A0202} = {DA1E0655-771D-46C2-B240-B228EA64409A}
 		{26B350AF-C807-47E5-A64F-4918070F9892} = {DA1E0655-771D-46C2-B240-B228EA64409A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D35EEBA3-AFE7-475D-88D7-87376E1995D2}
 	EndGlobalSection
 EndGlobal
